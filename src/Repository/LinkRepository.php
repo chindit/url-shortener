@@ -19,22 +19,16 @@ class LinkRepository extends ServiceEntityRepository
         parent::__construct($registry, Link::class);
     }
 
-    // /**
-    //  * @return Link[] Returns an array of Link objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function tokenExists(string $token): int
     {
         return $this->createQueryBuilder('l')
-            ->andWhere('l.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('l.id', 'ASC')
-            ->setMaxResults(10)
+            ->select('COUNT(l.id)')
+            ->where('l.token = :token')
+            ->setParameter('token', $token)
             ->getQuery()
-            ->getResult()
+            ->getSingleScalarResult()
         ;
     }
-    */
 
     /*
     public function findOneBySomeField($value): ?Link

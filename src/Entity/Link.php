@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidV4Generator;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraint as CustomAssert;
 
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
@@ -25,6 +27,9 @@ class Link
     private string $token;
 
     /**
+     * Assert\Url
+     * @CustomAssert\Online
+     *
      * @ORM\Column(type="string", length=255)
      */
     private string $target;
