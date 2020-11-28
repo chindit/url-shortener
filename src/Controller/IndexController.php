@@ -22,7 +22,6 @@ class IndexController extends AbstractController
      */
     public function index(?string $error = null): Response
     {
-        dump($error);
         return $this->render('index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
     }
 
