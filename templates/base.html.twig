@@ -5,6 +5,7 @@
         {{ encore_entry_script_tags('app') }}
         {{ encore_entry_link_tags('app') }}
         <script src="https://kit.fontawesome.com/a32969d67a.js" crossorigin="anonymous" async defer></script>
+        <link rel="icon" href="424.png" />
     </head>
     <body class="d-flex flex-column">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,16 +25,26 @@
                         <a class="nav-link" href="#">Pricing</a>
                     </li>-->
                 </ul>
-                <!--<span class="navbar-text">
-                  Navbar text with an inline element
-                </span>-->
+                <ul class="nav navbar-nav navbar-right">
+                    {% if is_granted('IS_AUTHENTICATED_REMEMBERED') or is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_register') }}">Register</a>
+                        </li>
+                    {% endif %}
+                </ul>
             </div>
         </nav>
-        <div class="container d-flex flex-grow-1">
-            {% block body %}
-            {% endblock %}
-            {% block javascript %}
-            {% endblock %}
-        </div>
+
+        {% block body %}
+        {% endblock %}
+        {% block javascript %}
+        {% endblock %}
     </body>
 </html>

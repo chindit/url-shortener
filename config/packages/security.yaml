@@ -7,7 +7,9 @@ security:
                 property: email
     encoders:
         App\Entity\User:
-            algorithm: auto
+            algorithm: 'argon2i'
+            memory_cost: 1024
+            time_cost: 4
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/

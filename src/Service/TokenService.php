@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 final class TokenService
 {
     public function __construct(
-        public LinkRepository $linkRepository
+        private LinkRepository $linkRepository
     )
     {}
 

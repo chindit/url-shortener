@@ -45,6 +45,16 @@ class Link
      */
     private ?User $user;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTime $lastView;
+
+    public function __construct()
+    {
+        $this->lastView = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -55,7 +65,7 @@ class Link
         return $this->token;
     }
 
-    public static function addLink(string $link, ?User $user = null) : self
+    public static function addLink(string $link) : self
     {
         return (new Link())
             ->setTarget($link);
@@ -102,5 +112,13 @@ class Link
     public function getUser(): ?User
     {
          return $this->user;
+    }
+
+    public function setClicked(): self
+    {
+        $this->views++;
+        $this->lastView = new \DateTime();
+
+        return $this;
     }
 }
