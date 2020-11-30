@@ -17,17 +17,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class IndexController extends AbstractController
 {
-    /**
-     * @Route("/", name="index")
-     */
+    #[Route('/', name: 'index')]
     public function index(?string $error = null): Response
     {
         return $this->render('index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
     }
 
-    /**
-     * @Route("/create", name="create_link", methods={"POST"})
-     */
+    #[Route('/create', name:'create_link', methods:["POST"])]
     public function createLink(Request $request, TokenService $tokenService, ?UserInterface $user, EntityManagerInterface $entityManager): Response
     {
         $link = new Link();
@@ -53,9 +49,7 @@ class IndexController extends AbstractController
         return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);
     }
 
-    /**
-     * @Route("/{token}", name="get_link")
-     */
+    #[Route('/{token}', name: 'get_link')]
     public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager)
     {
         $link = $linkRepository->findOneBy(['token' => $token]);
