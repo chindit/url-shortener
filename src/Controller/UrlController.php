@@ -20,7 +20,7 @@ class UrlController extends AbstractController
     #[Route('/', name: 'index', host: 'url.424.fr')]
     public function index(?string $error = null): Response
     {
-        return $this->render('index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
+        return $this->render('url/index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
     }
 
     #[Route('/create', name:'create_link', methods:["POST"], host: 'url.424.fr')]
