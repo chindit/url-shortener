@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Image uploader{% endblock %}
 {% block body %}
     <div class="container d-flex flex-grow-1">
         <div class="d-flex flex-grow-1 justify-content-center align-self-center">
@@ -12,11 +13,6 @@
                             {{ flashMessage|raw }}&nbsp;
                             <i class="far fa-clipboard is-clickable" onclick="copyToClipboard()"></i>
                             <span class="is-hidden font-weight-bold" id="link-copied">Link copied</span>
-                        </div>
-                    {% endfor %}
-                    {% for flashMessage in app.session.flashbag.get('danger') %}
-                        <div class="alert alert-danger">
-                            {{ flashMessage|raw }}&nbsp;
                         </div>
                     {% endfor %}
 
