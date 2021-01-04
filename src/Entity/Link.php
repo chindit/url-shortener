@@ -50,8 +50,14 @@ class Link
      */
     private \DateTime $lastView;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private \DateTime $createdAt;
+
     public function __construct()
     {
+        $this->createdAt = new \DateTime();
         $this->lastView = new \DateTime();
     }
 

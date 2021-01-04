@@ -17,19 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class IndexController extends AbstractController
+class UrlController extends AbstractController
 {
-    /**
-     * @Route("/", name="index")
-     */
+    #[Route('/', name: 'index', host: 'url.424.fr')]
     public function index(?string $error = null): Response
     {
-        return $this->render('index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
+        return $this->render('url/index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
     }
 
-    /**
-     * @Route("/create", name="create_link", methods={"POST"})
-     */
+    #[Route('/create', name:'create_link', methods:["POST"], host: 'url.424.fr')]
     public function createLink(Request $request, TokenService $tokenService, ?UserInterface $user, EntityManagerInterface $entityManager): Response
     {
         $link = new Link();
@@ -57,14 +53,8 @@ class IndexController extends AbstractController
         return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);
     }
 
-    /**
-     * @Route("/{token}", name="get_link")
-     */
-    public function getLink(
-        string $token,
-        LinkRepository $linkRepository,
-        EntityManagerInterface $entityManager
-    ): RedirectResponse | Response
+    #[Route('/{token}', name: 'get_link', host: 'url.424.fr')]
+    public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager)
     {
         $link = $linkRepository->findOneBy(['token' => $token]);
 
