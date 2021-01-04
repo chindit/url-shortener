@@ -11,18 +11,16 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class OnlineValidator extends ConstraintValidator
 {
-    public function __construct(
-        public HttpClientInterface $httpClient
-    )
-    {}
-
-    public function validate($value, Constraint $constraint)
+    public function __construct(public HttpClientInterface $httpClient)
     {
-        /* @var $constraint \App\Validator\Constraint\Online */
+    }
 
+    public function validate($value, Constraint $constraint): void
+    {
         if (null === $value || '' === $value) {
             return;
         }
+
         if (!str_starts_with($value, 'http')) {
             $value = 'https://' . $value;
         }

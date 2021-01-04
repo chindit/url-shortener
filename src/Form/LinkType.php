@@ -11,15 +11,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class LinkType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('target', UrlType::class, ['label' => false, 'attr' => ['placeholder' => 'Your URL']])
-            ->add('submit', SubmitType::class)
-        ;
+            ->add('submit', SubmitType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Link::class,

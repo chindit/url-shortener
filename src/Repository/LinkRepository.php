@@ -26,8 +26,7 @@ class LinkRepository extends ServiceEntityRepository
             ->where('l.token = :token')
             ->setParameter('token', $token)
             ->getQuery()
-            ->getSingleScalarResult()
-        ;
+            ->getSingleScalarResult();
     }
 
     /*

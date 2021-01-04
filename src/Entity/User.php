@@ -51,11 +51,13 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="array")
+     * @var array<string>
      */
     private array $roles = [];
 
     /**
      * @ORM\OneToMany(targetEntity="Link", mappedBy="user")
+     * @var Collection<int, Link>
      */
     private Collection $links;
 
@@ -65,7 +67,7 @@ class User implements UserInterface
         $this->lastLogin = new \DateTime();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }
@@ -128,6 +130,9 @@ class User implements UserInterface
         return $this->roles;
     }
 
+    /**
+     * @param array<string> $roles
+     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -140,7 +145,7 @@ class User implements UserInterface
         return '';
     }
 
-    public function getUsername(): string
+    public function getUsername(): ?string
     {
         return $this->getEmail();
     }

@@ -9,6 +9,8 @@ use App\Repository\LinkRepository;
 use App\Service\TokenService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,11 +36,11 @@ class IndexController extends AbstractController
         $linkForm = $this->createForm(LinkType::class, $link);
         $linkForm->handleRequest($request);
 
-        if ($linkForm->isSubmitted() && $linkForm->isValid())
-        {
+        if ($linkForm->isSubmitted() && $linkForm->isValid()) {
             if ($user instanceof User) {
                 $link->setUser($user);
             }
+
             $link->setToken($tokenService->getUniqueToken());
 
             $entityManager->persist($link);
@@ -46,21 +48,27 @@ class IndexController extends AbstractController
 
             $url = $this->generateUrl('get_link', ['token' => $link->getToken()], UrlGeneratorInterface::ABSOLUTE_URL);
             $this->addFlash('success', 'Your link is <a id="link" href="' . $url . '">' . $url . '</a>');
-
         } else {
-            $error = $linkForm->get('target')->getErrors()->current()->getMessage();
+            /** @var FormError $currentError */
+            $currentError = $linkForm->get('target')->getErrors()->current();
+            $error = $currentError->getMessage();
         }
+
         return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);
     }
 
     /**
      * @Route("/{token}", name="get_link")
      */
-    public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager)
+    public function getLink(
+        string $token,
+        LinkRepository $linkRepository,
+        EntityManagerInterface $entityManager
+    ): RedirectResponse | Response
     {
         $link = $linkRepository->findOneBy(['token' => $token]);
 
-        if (!$link) {
+        if (!$link || $link->getTarget() === null) {
             $this->addFlash('danger', 'Invalid link');
 
             return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);

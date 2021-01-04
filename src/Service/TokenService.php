@@ -3,16 +3,16 @@
 
 namespace App\Service;
 
-
 use App\Repository\LinkRepository;
 use Doctrine\ORM\EntityManagerInterface;
 
 final class TokenService
 {
     public function __construct(
-        private LinkRepository $linkRepository
+    private LinkRepository $linkRepository
     )
-    {}
+    {
+    }
 
     public function getUniqueToken(): string
     {
