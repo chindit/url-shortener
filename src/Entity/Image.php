@@ -52,12 +52,12 @@ class Image
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $createdAt;
+    private \DateTimeInterface $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private \DateTime $lastView;
+    private \DateTimeInterface $lastView;
 
     public function __construct()
     {
@@ -65,7 +65,7 @@ class Image
         $this->lastView = new \DateTime();
     }
 
-    public function getId(): ?int
+    public function getId(): ?string
     {
         return $this->id;
     }

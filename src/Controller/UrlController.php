@@ -54,7 +54,7 @@ class UrlController extends AbstractController
     }
 
     #[Route('/{token}', name: 'get_link', host: 'url.424.fr')]
-    public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager)
+    public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager): RedirectResponse|Response
     {
         $link = $linkRepository->findOneBy(['token' => $token]);
 
