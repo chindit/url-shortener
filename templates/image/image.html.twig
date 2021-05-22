@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Image uploader{% endblock %}
+{% block body %}
+    <div class="container d-flex flex-grow-1">
+        <div class="d-flex flex-grow-1 justify-content-center align-self-center">
+            <div class="mt-4 row d-flex">
+                <div class="col-md-12">
+                    {% for flashMessage in app.session.flashbag.get('success') %}
+                        <div class="alert alert-success">
+                            {{ flashMessage|raw }}&nbsp;
+                            <i class="far fa-clipboard is-clickable" onclick="copyToClipboard()"></i>
+                            <span class="is-hidden font-weight-bold" id="link-copied">Link copied</span>
+                        </div>
+                    {% endfor %}
+
+                    <img src="{{ image }}" width="250" alt="Image" />
+
+                    <div>
+                         <input id="link" class="input mb-3 mt-3" type="text" value="{{ image }}" />
+                    </div>
+                    <div>
+                        <button class="btn btn-info" onclick="copyToClipboard()"><i class="far fa-clipboard"></i>&nbsp;&nbsp;Copy link</button>
+                    </div>
+
+                    <a class="btn btn-primary mt-3" href="{{ path('image') }}">Upload another image</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+<script>
+    function copyToClipboard() {
+    var text = document.getElementById('link').value;
+    navigator.clipboard.writeText(text)
+    .then(function () {
+    document.getElementById('link-copied').style.display = 'inline';
+});
+}
+</script>
+{# WARNING: DO NOT SHORTEN <SCRIPT> TAG OR LOADING WILL FAIL #}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+<script>
+    $(document).ready(function () {
+
+    bsCustomFileInput.init();
+})
+</script>
+{% endblock %}

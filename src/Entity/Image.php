@@ -25,6 +25,11 @@ class Image
     private string $token;
 
     /**
+     * @ORM\Column(type="string", unique=true)
+     */
+    private string $fileName;
+
+    /**
      * @ORM\Column(type="string", length=50)
      */
     private string $mime;
@@ -78,6 +83,18 @@ class Image
     public function setToken(string $token): self
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    public function setFileName(string $fileName): self
+    {
+        $this->fileName = $fileName;
 
         return $this;
     }
@@ -162,6 +179,14 @@ class Image
     public function setLastView(\DateTimeInterface $lastView): self
     {
         $this->lastView = $lastView;
+
+        return $this;
+    }
+
+    public function setClicked(): self
+    {
+        $this->views++;
+        $this->lastView = new \DateTime();
 
         return $this;
     }

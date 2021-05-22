@@ -19,14 +19,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class UrlController extends AbstractController
 {
-    #[Route('/', name: 'index', host: 'url.424.fr')]
+    #[Route('/', name: 'index')]
     public function index(?string $error = null): Response
     {
         return $this->render('url/index.html.twig', ['form' => $this->createForm(LinkType::class)->createView(), 'error' => $error]);
     }
 
-    #[Route('/create', name:'create_link', methods:["POST"], host: 'url.424.fr')]
-    public function createLink(Request $request, TokenService $tokenService, ?UserInterface $user, EntityManagerInterface $entityManager): Response
+    #[Route('/create', name:'create_link', methods:["POST"])]
+    public function createLink(Request $request, ?UserInterface $user, EntityManagerInterface $entityManager, LinkRepository $linkRepository): Response
     {
         $link = new Link();
         $linkForm = $this->createForm(LinkType::class, $link);
@@ -37,7 +37,7 @@ class UrlController extends AbstractController
                 $link->setUser($user);
             }
 
-            $link->setToken($tokenService->getUniqueToken());
+            $link->setToken(TokenService::getUniqueToken($linkRepository));
 
             $entityManager->persist($link);
             $entityManager->flush();
@@ -53,7 +53,7 @@ class UrlController extends AbstractController
         return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);
     }
 
-    #[Route('/{token}', name: 'get_link', host: 'url.424.fr')]
+    #[Route('/{token}', name: 'get_link')]
     public function getLink(string $token, LinkRepository $linkRepository, EntityManagerInterface $entityManager): RedirectResponse|Response
     {
         $link = $linkRepository->findOneBy(['token' => $token]);
@@ -61,7 +61,7 @@ class UrlController extends AbstractController
         if (!$link || $link->getTarget() === null) {
             $this->addFlash('danger', 'Invalid link');
 
-            return $this->forward('App\Controller\IndexController::index', ['error' => $error ?? null]);
+            return $this->forward('App\Controller\IndexController::index');
         }
 
         $link->setClicked();

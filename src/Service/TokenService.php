@@ -3,18 +3,12 @@
 
 namespace App\Service;
 
-use App\Repository\LinkRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Contracts\TokenizableRepository;
 
 final class TokenService
 {
-    public function __construct(
-    private LinkRepository $linkRepository
-    )
-    {
-    }
-
-    public function getUniqueToken(): string
+    public static function getUniqueToken(TokenizableRepository $repository
+    ): string
     {
         $chars = array_merge(range('A', 'Z'), range('a', 'z'), array_map('strval', range(0, 9)));
         $length = 3;
@@ -24,7 +18,7 @@ final class TokenService
                 shuffle($chars);
                 $token = implode('', array_slice($chars, 0, $length));
 
-                if (!$this->linkRepository->tokenExists($token)) {
+                if (!$repository->tokenExists($token)) {
                     return $token;
                 }
             }
