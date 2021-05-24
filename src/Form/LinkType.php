@@ -15,7 +15,7 @@ class LinkType extends AbstractType
     {
         $builder
             ->add('target', UrlType::class, ['label' => false, 'attr' => ['placeholder' => 'Your URL']])
-            ->add('submit', SubmitType::class, ['attr' => ['class' => 'btn btn-primary mt-2']]);
+            ->add('submit', SubmitType::class, ['attr' => ['class' => 'btn btn-lg btn-block btn-primary mt-2']]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
