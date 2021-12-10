@@ -48,7 +48,7 @@ class ImageController extends AbstractController
             $image = $form->get('image')->getData();
             $token = TokenService::getUniqueToken($imageRepository);
         try {
-            [$width, $height] = getimagesize((string)$image->getRealPath());
+            [$width, $height] = getimagesize((string)$image->getRealPath()) ?: [];
             $fileName = $token . '.' . $image->guessExtension();
             $imageEntity = (new Image())
                 ->setHeight($height)
@@ -58,8 +58,13 @@ class ImageController extends AbstractController
                 ->setFilename($fileName)
                 ->setToken($token);
 
+            $imageDirectory = $this->getParameter('image_directory');
+            if (!is_string($imageDirectory)) {
+                throw new \UnexpectedValueException('Image directory is not a valid path');
+            }
+
             $image->move(
-                (string)$this->getParameter('image_directory'),
+                $imageDirectory,
                 $fileName
             );
 
@@ -101,6 +106,11 @@ class ImageController extends AbstractController
 
         $entityManager->flush();
 
-        return new BinaryFileResponse((string)$this->getParameter('image_directory') . '/' . $image->getFileName());
+        $imageDirectory = $this->getParameter('image_directory');
+        if (!is_string($imageDirectory)) {
+            throw new \UnexpectedValueException('Image directory is not a valid path');
+        }
+
+        return new BinaryFileResponse($imageDirectory . '/' . $image->getFileName());
     }
 }

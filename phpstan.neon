@@ -2,5 +2,4 @@ parameters:
     level: 8
     ignoreErrors:
         - '#Access to an undefined property Symfony\\Component\\Validator\\Constraint::\$message.#'
-        - '#Method App\\Form\\[a-zA-Z0-9\\_]+::buildForm\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type Symfony\\Component\\Form\\FormBuilderInterface.#'
-        - '#Method App\\Form\\[a-zA-Z0-9\\_]+::buildForm\(\) has parameter \$[a-zA-Z0-9\\_]+ with no value type specified in iterable type array.#'
+        - '#Method App\\Validator\\Constraint\\[a-zA-Z0-9\\_]+::validate\(\) has parameter \$[a-zA-Z0-9\\_]+ with no type specified.#'

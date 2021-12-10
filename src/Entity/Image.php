@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidV4Generator;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=ImageRepository::class)
@@ -66,6 +67,7 @@ class Image
 
     public function __construct()
     {
+        $this->id = Uuid::v4();
         $this->createdAt = new \DateTime();
         $this->lastView = new \DateTime();
     }

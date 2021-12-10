@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\LinkRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\IdGenerator\UuidV4Generator;
+use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraint as CustomAssert;
 
@@ -57,6 +58,7 @@ class Link
 
     public function __construct()
     {
+        $this->id = Uuid::v4();
         $this->createdAt = new \DateTime();
         $this->lastView = new \DateTime();
     }
@@ -126,5 +128,15 @@ class Link
         $this->lastView = new \DateTime();
 
         return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function getLastView(): ?\DateTimeInterface
+    {
+        return $this->lastView;
     }
 }
