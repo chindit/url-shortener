@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Bridge\Doctrine\IdGenerator\UuidV4Generator;
+use Symfony\Bridge\Doctrine\IdGenerator\UuidGenerator;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,7 +20,7 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="uuid", unique=true)
      * @ORM\GeneratedValue(strategy="CUSTOM")
-     * @ORM\CustomIdGenerator(class=UuidV4Generator::class)
+     * @ORM\CustomIdGenerator(class=UuidGenerator::class)
      */
     private string $id;
 
@@ -125,9 +125,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRoles(): ?array
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->roles;
+        return $this->email;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
     /**

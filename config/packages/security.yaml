@@ -1,26 +1,27 @@
 security:
     # https://symfony.com/doc/current/security.html#where-do-users-come-from-user-providers
+    enable_authenticator_manager: true
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+        App\Entity\User:
+            algorithm: argon2i
+            memory_cost: 1024
+            time_cost: 4
+
     providers:
         db_user:
             entity:
                 class: App\Entity\User
                 property: email
-    encoders:
-        App\Entity\User:
-            algorithm: 'argon2i'
-            memory_cost: 1024
-            time_cost: 4
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             provider: db_user
-            guard:
-                authenticators:
-                    - App\Security\LoginAuthenticator
+            custom_authenticator: App\Security\LoginAuthenticator
             logout:
                 path: app_logout
                 target: index
