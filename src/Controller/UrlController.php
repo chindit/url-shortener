@@ -26,7 +26,12 @@ class UrlController extends AbstractController
     }
 
     #[Route('/create', name:'create_link', methods:["POST"])]
-    public function createLink(Request $request, ?UserInterface $user, EntityManagerInterface $entityManager, LinkRepository $linkRepository): Response
+    public function createLink(
+        Request $request,
+        ?UserInterface $user,
+        EntityManagerInterface $entityManager,
+        LinkRepository $linkRepository
+    ): Response
     {
         $link = new Link();
         $linkForm = $this->createForm(LinkType::class, $link);
